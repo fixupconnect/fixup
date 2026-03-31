@@ -1,0 +1,115 @@
+/* RESET */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: white;
+  background: #0f172a;
+}
+
+/* HERO SECTION */
+.hero {
+  height: 100vh;
+  background: url("../images/bg.webp") no-repeat center center/cover;
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* OVERLAY */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.6)
+  );
+}
+
+/* CONTENT */
+.hero-content {
+  position: absolute;
+  left: 10%;
+  top: 75%;
+  transform: translateY(-50%);
+  text-align: left;
+  z-index: 1;
+
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+}
+
+.hero p {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.hero button {
+  padding: 12px 24px;
+  background: #3b82f6;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.hero button:hover {
+  opacity: 0.85;
+  transition: 0.3s;
+}
+
+/* FORM SECTION */
+.form-section {
+  padding: 60px 20px;
+  text-align: center;
+  background: #020617;
+}
+
+.form-section h2 {
+  margin-bottom: 20px;
+}
+
+input, textarea, select {
+  display: block;
+  width: 90%;
+  max-width: 400px;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+textarea {
+  resize: none;
+  height: 80px;
+}
+
+button {
+  padding: 10px 20px;
+  background: #22c55e;
+  border: none;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* SUCCESS MESSAGE */
+#successMessage {
+  text-align: center;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
