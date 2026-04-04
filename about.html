@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - FixUp</title>
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .page-container {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #020617, #0f172a);
+      color: #e2e8f0;
+      padding: 100px 20px;
+      text-align: center;
+    }
+
+    .content-box {
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .content-box h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .content-box p {
+      line-height: 1.8;
+      margin-bottom: 20px;
+      color: #cbd5f5;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- MENU -->
+<div class="menu-icon" onclick="toggleMenu()">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+<div class="side-menu" id="sideMenu">
+  <a href="index.html" onclick="closeMenu()">Home</a>
+  <a href="about.html" onclick="closeMenu()">About</a>
+  <a href="features.html" onclick="closeMenu()">Features</a>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<!-- CONTENT -->
+<section class="page-container">
+  <div class="content-box">
+
+    <h1>About FixUp</h1>
+
+    <p>
+      FixUp is a modern repair service platform built to simplify the way people
+      handle device issues. Instead of spending time searching for reliable repair
+      shops, FixUp connects users with a streamlined solution that handles everything
+      from pickup to delivery.
+    </p>
+
+    <p>
+      Our system is designed with efficiency and trust in mind. We focus on fast
+      turnaround times, professional service handling, and a seamless customer
+      experience.
+    </p>
+
+    <p>
+      The goal of FixUp is not just to repair devices, but to redefine convenience
+      in everyday technical services.
+    </p>
+
+  </div>
+</section>
+
+<script src="js/app.js"></script>
+</body>
+</html>

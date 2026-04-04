@@ -1,14 +1,17 @@
 const form = document.getElementById("repairForm");
 const successMessage = document.getElementById("successMessage");
 
-// Input references
+// Inputs
 const nameInput = document.getElementById("name");
 const phoneInput = document.getElementById("phone");
 const deviceInput = document.getElementById("device");
 const problemInput = document.getElementById("problem");
 const serviceInput = document.getElementById("service");
+const locationText = document.getElementById("locationText");
 
-// Load saved data (auto-fill)
+let userLocation = null;
+
+// Load saved data
 window.onload = function () {
   const savedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -20,80 +23,136 @@ window.onload = function () {
   }
 };
 
-// Submit handler
+// Submit
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const nameVal = nameInput.value.trim();
-  const phoneVal = phoneInput.value.trim();
-  const deviceVal = deviceInput.value.trim();
-  const serviceVal = serviceInput.value;
-
-  // Validation
-  if (phoneVal.length < 10) {
-    alert("Enter valid phone number");
+  if (!userLocation) {
+    alert("Please select location first");
     return;
   }
 
-  if (!serviceVal) {
-    alert("Select a service");
-    return;
-  }
-
-  // Button loading state
   const submitBtn = form.querySelector('button[type="submit"]');
   submitBtn.innerText = "Submitting...";
   submitBtn.disabled = true;
 
-  // Save to Firebase
   db.collection("requests").add({
-    name: nameVal,
-    phone: phoneVal,
-    device: deviceVal,
+    name: nameInput.value,
+    phone: phoneInput.value,
+    device: deviceInput.value,
     problem: problemInput.value,
-    service: serviceVal,
+    service: serviceInput.value,
+    location: userLocation,
     time: new Date()
   })
   .then(() => {
-
-    // Save locally
     localStorage.setItem("user", JSON.stringify({
-      name: nameVal,
-      phone: phoneVal,
-      device: deviceVal,
+      name: nameInput.value,
+      phone: phoneInput.value,
+      device: deviceInput.value,
       problem: problemInput.value
     }));
 
-    // Show success UI
     document.getElementById("formContainer").style.display = "none";
     successMessage.style.display = "block";
-
   })
   .catch((error) => {
-    alert("Error saving data");
     console.error(error);
-
+    alert("Error saving data");
     submitBtn.innerText = "Submit";
     submitBtn.disabled = false;
   });
-
 });
 
-// Reset form
+// Reset
 function resetForm() {
   form.reset();
+  userLocation = null;
+  locationText.innerText = "Location not selected";
 
   document.getElementById("formContainer").style.display = "block";
   successMessage.style.display = "none";
-
-  const submitBtn = form.querySelector('button[type="submit"]');
-  submitBtn.innerText = "Submit";
-  submitBtn.disabled = false;
 }
 
-// Scroll function
-function scrollToForm() {
-  document.getElementById("form").scrollIntoView({
-    behavior: "smooth"
+// Location
+function getLocation() {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      userLocation = { lat, lon };
+
+      showMap(lat, lon);
+      getAddress(lat, lon);
+    },
+    () => alert("Location access denied")
+  );
+}
+
+// Address
+function getAddress(lat, lon) {
+  const apiKey = "AIzaSyCsDSkyIxVIaXMqnMXDaiC7SKxRctK73wI";
+
+  fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${apiKey}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.results.length > 0) {
+        locationText.innerText = data.results[0].formatted_address;
+      } else {
+        locationText.innerText = "Address not found";
+      }
+    });
+}
+
+// Map
+function showMap(lat, lon) {
+  const mapDiv = document.getElementById("map");
+
+  // 🔥 Ensure map has height (extra safety for mobile)
+  mapDiv.style.height = "300px";
+
+  const map = new google.maps.Map(mapDiv, {
+    center: { lat: lat, lng: lon },
+    zoom: 17
+  });
+
+  let marker = new google.maps.Marker({
+    position: { lat: lat, lng: lon },
+    map: map
+  });
+
+  // 🔥 CRITICAL FIX (mobile rendering)
+  setTimeout(() => {
+    google.maps.event.trigger(map, "resize");
+    map.setCenter({ lat: lat, lng: lon });
+  }, 300);
+
+  map.addListener("click", function (e) {
+    const lat = e.latLng.lat();
+    const lon = e.latLng.lng();
+
+    marker.setPosition({ lat: lat, lng: lon });
+
+    userLocation = { lat, lon };
+
+    getAddress(lat, lon);
   });
 }
+
+// Menu
+function toggleMenu() {
+  document.getElementById("sideMenu").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+
+function closeMenu() {
+  document.getElementById("sideMenu").classList.remove("active");
+  document.getElementById("overlay").classList.remove("active");
+}
+
+// Scroll
+function scrollToForm() {
+  document.getElementById("form").scrollIntoView({ behavior: "smooth" });
+}
+

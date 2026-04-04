@@ -8,7 +8,21 @@
 </head>
 <body>
 
-<!-- HERO SECTION -->
+<!-- MENU -->
+<div class="menu-icon" onclick="toggleMenu()">
+  <div></div><div></div><div></div>
+</div>
+
+<div class="side-menu" id="sideMenu">
+  <a href="index.html" onclick="closeMenu()">Home</a>
+  <a href="about.html" onclick="closeMenu()">About</a>
+  <a href="features.html" onclick="closeMenu()">Features</a>
+  <a href="#form" onclick="closeMenu()">Book Repair</a>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<!-- HERO -->
 <section class="hero">
   <div class="hero-content">
     <button onclick="scrollToForm()">Get Started</button>
@@ -16,38 +30,51 @@
   </div>
 </section>
 
-<!-- FORM SECTION -->
+<!-- FORM -->
 <section class="form-section" id="form">
+  <div class="form-wrapper">
 
-  <!-- FORM CONTAINER -->
-  <div id="formContainer">
-    <h2>Book a Repair</h2>
+    <div class="form-box">
+      <div id="formContainer">
+        <h2>Book a Repair</h2>
 
-    <form id="repairForm">
-      <select id="service" required>
-        <option value="">Select Service</option>
-        <option>Screen Repair</option>
-        <option>Battery Replacement</option>
-        <option>Software Issue</option>
-      </select>
+        <form id="repairForm">
+          <select id="service" required>
+            <option value="">Select Service</option>
+            <option>Screen Repair</option>
+            <option>Battery Replacement</option>
+            <option>Software Issue</option>
+            <option>Other issue</option>
+          </select>
 
-      <input type="text" id="name" placeholder="Your Name" required>
-      <input type="tel" id="phone" placeholder="Phone Number" required>
-      <input type="text" id="device" placeholder="Device (e.g. iPhone 11)" required>
-      <textarea id="problem" placeholder="Describe the problem"></textarea>
+          <input type="text" id="name" placeholder="Your Name" required>
+          <input type="tel" id="phone" placeholder="Phone Number" required>
+          <input type="text" id="device" placeholder="Device" required>
+          <textarea id="problem" placeholder="Describe the problem"></textarea>
 
-      <button type="submit">Submit</button>
-    </form>
+          <p id="locationText">Location not selected</p>
+
+          <button type="button" onclick="getLocation()">Use My Location</button>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+      <!-- ONLY ONE SUCCESS MESSAGE -->
+      <div id="successMessage" style="display:none;">
+        <h2>Request Submitted</h2>
+        <p>We will contact you shortly.</p>
+        <button onclick="resetForm()">Submit Another</button>
+      </div>
+    </div>
+
+    <div id="map"></div>
+
   </div>
-
-  <!-- SUCCESS MESSAGE -->
-  <div id="successMessage" style="display:none;">
-    <h2>Request Submitted</h2>
-    <p>We will contact you shortly.</p>
-    <button onclick="resetForm()">Submit Another</button>
-  </div>
-
 </section>
+
+<!-- SCRIPTS -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsDSkyIxVIaXMqnMXDaiC7SKxRctK73wI&libraries=places"></script>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
