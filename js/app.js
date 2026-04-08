@@ -1,3 +1,6 @@
+let map;
+let marker;
+let searchBox;
 const form = document.getElementById("repairForm");
 const successMessage = document.getElementById("successMessage");
 
@@ -108,25 +111,27 @@ function getAddress(lat, lon) {
 // Map
 function showMap(lat, lon) {
   const mapDiv = document.getElementById("map");
-
-  // Force display and height before initializing
   mapDiv.style.display = "block";
-  
-  const map = new google.maps.Map(mapDiv, {
-    center: { lat: lat, lng: lon },
-    zoom: 17
-  });
 
-  let marker = new google.maps.Marker({
-    position: { lat: lat, lng: lon },
-    map: map
-  });
+  const location = { lat: lat, lng: lon };
 
-  // Use the 'idle' listener: it's more reliable than setTimeout on mobile
-  google.maps.event.addListenerOnce(map, 'idle', function() {
-    google.maps.event.trigger(map, 'resize');
-    map.setCenter({ lat: lat, lng: lon });
-  });
+  // Initialize map ONLY ONCE
+  if (!map) {
+    map = new google.maps.Map(mapDiv, {
+      center: location,
+      zoom: 17
+    });
+
+    marker = new google.maps.Marker({
+      map: map
+    });
+
+    initSearch(); // 🔥 attach search here
+  }
+
+  // Update position
+  map.setCenter(location);
+  marker.setPosition(location);
 }
 
 // Menu
@@ -151,4 +156,53 @@ function closeMenu() {
 function scrollToForm() {
   document.getElementById("form").scrollIntoView({ behavior: "smooth" });
 }
+function initSearch() {
+  const input = document.getElementById("map-search");
 
+  searchBox = new google.maps.places.SearchBox(input);
+
+  map.addListener("bounds_changed", () => {
+    searchBox.setBounds(map.getBounds());
+  });
+
+  searchBox.addListener("places_changed", () => {
+    const places = searchBox.getPlaces();
+
+    if (!places || places.length === 0) return;
+
+    const place = places[0];
+
+    if (!place.geometry) return;
+
+    const location = place.geometry.location;
+
+    // Move map
+    map.setCenter(location);
+    map.setZoom(17);
+
+    // Move marker
+    marker.setPosition(location);
+
+    // Save to your system
+    userLocation = {
+      lat: location.lat(),
+      lon: location.lng()
+    };
+
+    // Update address text
+    locationText.innerText = place.formatted_address || "Location selected";
+  });
+}
+window.onload = function () {
+  const savedUser = JSON.parse(localStorage.getItem("user"));
+
+  if (savedUser) {
+    nameInput.value = savedUser.name || "";
+    phoneInput.value = savedUser.phone || "";
+    deviceInput.value = savedUser.device || "";
+    problemInput.value = savedUser.problem || "";
+  }
+
+  // Show default map
+  showMap(10.8505, 76.2711);
+};
