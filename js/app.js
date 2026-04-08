@@ -109,9 +109,9 @@ function getAddress(lat, lon) {
 function showMap(lat, lon) {
   const mapDiv = document.getElementById("map");
 
-  // 🔥 Ensure map has height (extra safety for mobile)
-  mapDiv.style.height = "300px";
-
+  // Force display and height before initializing
+  mapDiv.style.display = "block";
+  
   const map = new google.maps.Map(mapDiv, {
     center: { lat: lat, lng: lon },
     zoom: 17
@@ -122,33 +122,29 @@ function showMap(lat, lon) {
     map: map
   });
 
-  // 🔥 CRITICAL FIX (mobile rendering)
-  setTimeout(() => {
-    google.maps.event.trigger(map, "resize");
+  // Use the 'idle' listener: it's more reliable than setTimeout on mobile
+  google.maps.event.addListenerOnce(map, 'idle', function() {
+    google.maps.event.trigger(map, 'resize');
     map.setCenter({ lat: lat, lng: lon });
-  }, 300);
-
-  map.addListener("click", function (e) {
-    const lat = e.latLng.lat();
-    const lon = e.latLng.lng();
-
-    marker.setPosition({ lat: lat, lng: lon });
-
-    userLocation = { lat, lon };
-
-    getAddress(lat, lon);
   });
 }
 
 // Menu
 function toggleMenu() {
+  // Toggle the side menu and overlay
   document.getElementById("sideMenu").classList.toggle("active");
   document.getElementById("overlay").classList.toggle("active");
+  
+  // Toggle the icon transformation (the 3 bars to X)
+  document.querySelector(".menu-icon").classList.toggle("active");
 }
 
 function closeMenu() {
   document.getElementById("sideMenu").classList.remove("active");
   document.getElementById("overlay").classList.remove("active");
+  
+  // Ensure the icon reverts back to 3 bars
+  document.querySelector(".menu-icon").classList.remove("active");
 }
 
 // Scroll
