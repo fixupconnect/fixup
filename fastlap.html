@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speed Up Your PC - Clean Layout</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 26px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .section {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .content {
+      width: 60%;
+    }
+
+    .content h2 {
+      color: #0ea5e9;
+      margin-top: 0;
+    }
+
+    .steps {
+      padding-left: 20px;
+    }
+
+    .steps li {
+      margin-bottom: 8px;
+    }
+
+    .why {
+      background: #f1f5f9;
+      padding: 10px;
+      margin-top: 10px;
+      border-left: 4px solid #0ea5e9;
+    }
+
+    .image {
+      width: 40%;
+    }
+
+    .image img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #111;
+      color: #aaa;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .section {
+        flex-direction: column;
+      }
+
+      .content, .image {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+
+<div class="container">
+
+  <div class="section">
+    <div class="content">
+      <h2>1. Disable Startup Programs</h2>
+      <ol class="steps">
+        <li>Press Ctrl + Shift + Esc</li>
+        <li>Open Startup tab</li>
+        <li>Disable unwanted apps</li>
+      </ol>
+      <div class="why">Reduces load when PC starts → faster boot.</div>
+    </div>
+
+    <div class="image">
+      <img src="images/speed/startup.png" alt="startup">
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="content">
+      <h2>2. Delete Temporary Files</h2>
+      <ol class="steps">
+        <li>Press Win + R</li>
+        <li>Type "%temp%"</li>
+        <li>Delete all files</li>
+      </ol>
+      <div class="why">Removes junk → improves speed.</div>
+    </div>
+
+    <div class="image">
+      <img src="images/speed/temp.png" alt="temp">
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="content">
+      <h2>3. Best Performance Mode</h2>
+      <ol class="steps">
+        <li>Search sleep</li>
+        <li>Select peformance mode</li>
+      </ol>
+      <div class="why">cpu get more power -> fast.</div>
+    </div>
+
+    <div class="image">
+      <img src="images/speed/perform.png" alt="performance">
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="content">
+      <h2>4. Increase Virtual Memory</h2>
+      <ol class="steps">
+        <li>Open Advanced system settings</li>
+        <li>Go to Performance settings</li>
+        <li>Set custom size</li>
+      </ol>
+      <div class="why">Helps when RAM is low.</div>
+    </div>
+
+    <div class="image">
+      <img src="images/speed/virtual.png" alt="virtual memory">
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="content">
+      <h2>5. Use SSD</h2>
+      <ol class="steps">
+        <li>Buy SSD</li>
+        <li>Install OS in SSD</li>
+        <li>Use HDD for storage</li>
+      </ol>
+      <div class="why">Biggest speed improvement.</div>
+    </div>
+
+    <div class="image">
+      <img src="images/speed/ssd.png" alt="ssd">
+    </div>
+  </div>
+
+</div>
+
+
+</body>
+</html>
